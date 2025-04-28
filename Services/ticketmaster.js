@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-function fetchAllEventsFromTicketmaster() {
+function fetchAllEventsFromTicketmaster(city) {
   return axios
     .get(
       `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${process.env.TICKETMASTER_API_KEY}`,
@@ -8,11 +8,11 @@ function fetchAllEventsFromTicketmaster() {
         params: {
           keyword: "children",
           sort: "date,asc",
+          city: city,
         },
       }
     )
     .then((response) => {
-      console.log(response.data._embedded?.events);
       return response.data._embedded?.events;
     })
     .catch((error) => {

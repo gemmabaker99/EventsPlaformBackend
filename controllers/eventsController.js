@@ -4,7 +4,8 @@ const {
 } = require("../Services/ticketmaster");
 
 function getEvents(req, res, next) {
-  fetchAllEventsFromTicketmaster()
+  const { city } = req.query;
+  fetchAllEventsFromTicketmaster(city)
     .then((events) => {
       res.status(200).json({ events });
     })
