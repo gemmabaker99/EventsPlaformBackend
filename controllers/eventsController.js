@@ -9,9 +9,7 @@ function getEvents(req, res, next) {
     .then((events) => {
       res.status(200).json({ events });
     })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
+    .catch(next);
 }
 
 function getEventById(req, res, next) {
@@ -20,9 +18,7 @@ function getEventById(req, res, next) {
     .then((event) => {
       res.status(200).json({ event });
     })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
+    .catch(next);
 }
 
 module.exports = { getEvents, getEventById };

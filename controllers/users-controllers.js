@@ -2,7 +2,7 @@ const { insertUser, findUserByEmail } = require("../models/users-models");
 const bcrypt = require("bcrypt");
 
 function signupUser(req, res, next) {
-  const { name, username, email, password } = req.body;
+  const { name, username, email, password, role } = req.body;
 
   if (!name || !username || !email || !password) {
     return res.status(400).send({ msg: "Missing required fields" });
@@ -11,7 +11,7 @@ function signupUser(req, res, next) {
   bcrypt
     .hash(password, 10)
     .then((hashedPassword) => {
-      return insertUser(name, username, email, hashedPassword);
+      return insertUser(name, username, email, hashedPassword, role);
     })
     .then((newUser) => {
       res
@@ -37,25 +37,22 @@ function loginUser(req, res, next) {
   findUserByEmail(email)
     .then((user) => {
       if (!user) {
-        return Promise.reject({
-          status: 401,
-          msg: "Invalid email or password",
-        });
+        throw { status: 401, msg: "Invalid email or password!" };
       }
 
       return bcrypt.compare(password, user.password).then((isMatch) => {
         if (!isMatch) {
-          return Promise.reject({
-            status: 401,
-            msg: "Invalid email or password",
-          });
+          throw { status: 401, msg: "Invalid email or password" };
         }
 
-        res
-          .status(200)
-          .send({
-            user: { id: user.user_id, name: user.name, email: user.email },
-          });
+        res.status(200).send({
+          user: {
+            id: user.user_id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+          },
+        });
       });
     })
     .catch((err) => {

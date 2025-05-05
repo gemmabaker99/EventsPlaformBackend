@@ -12,10 +12,4 @@ eventsRouter.get("/", getEvents);
 
 eventsRouter.get("/:id", getEventById);
 
-// eventsRouter.get("/:id", (req, res) => {
-//   const event = events.find((event) => event.id === parseInt(req.params.id));
-//   if (!event) return res.status(404).send("Event not found");
-//   res.json(event);
-// });
-
 module.exports = eventsRouter;
